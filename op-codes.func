@@ -1,0 +1,19 @@
+const int op::transfer = 0xf8a7ea5;
+const int op::transfer_notification = 0x7362d09c;
+const int op::internal_transfer = 0x178d4519;
+const int op::external_transfer = 0x777; ;;TODO
+const int op::excesses = 0xd53276db;
+const int op::burn = 0x595f07bc;
+const int op::unwrap_notification = 0x888; ;;TODO
+
+const int op::provide_wallet_address = 0x2c76b973;
+const int op::take_wallet_address = 0xd1735400;
+
+;; Minter
+const int op::mint = 21; ;; TODO
+
+(slice, (int)) ~load_op(slice s) inline { return s.load_uint(32); }
+(slice, (int)) ~load_query_id(slice s) inline { return s.load_uint(64); }
+builder store_op(builder b, int op) inline { return b.store_uint(op, 32); }
+builder store_query_id(builder b, int query_id) inline { return b.store_uint(query_id, 64); }
+

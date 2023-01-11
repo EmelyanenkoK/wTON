@@ -1,0 +1,13 @@
+;; int_msg_info$0 ihr_disabled:Bool bounce:Bool bounced:Bool src:MsgAddress -> 011000
+const int msg_flag::non_bounceable = 0x10;
+const int msg_flag::bounceable = 0x18;
+
+;; send_raw_message modes
+const REVERT_ON_ERRORS = 0;
+const PAY_FEES_SEPARATELY = 1;
+const IGNORE_ERRORS = 2;
+const CARRY_REMAINING_GAS = 64;
+const SELFDESTRUCT_ON_EMPTY = 32;
+
+
+builder store_msg_flag(builder b, int msg_flag) inline { return b.store_uint(msg_flag, 6); }
