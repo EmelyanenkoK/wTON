@@ -1,7 +1,7 @@
 #include "error-codes.func";
 
 const int workchain = 0;
-const slice sss = """ "sakfpwekfwpe""";
+
 int is_resolvable?(slice addr) inline {
     (int wc, _) = parse_std_addr(addr);
     return wc == workchain;

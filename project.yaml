@@ -1,0 +1,7 @@
+wton-minter:
+  data: fift/empty.fif
+  func: [ func/jetton-minter.func ]
+
+wton-wallet:
+  data: fift/empty.fif
+  func: [ func/jetton-wallet.func ]

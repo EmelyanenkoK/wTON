@@ -1,5 +1,5 @@
 ;; This is jetton wallet fabric: contract that mimics to
-;; JettonMinter but it doesn't mint jettons itself, instead 
+;; JettonMinter but it doesn't mint jettons itself, instead
 ;; it only mints wallets which mint tokens for themselves
 
 #include "stdlib.func";
@@ -32,7 +32,7 @@ const int fee::provide_address_gas_consumption = 13000000;
             .store_msg_flag(msg_flag::non_bounceable)
             .store_slice(to_wallet_address)
             .store_coins(0)
-            .store_uint(4 + 2 + 0, 1 + 4 + 4 + 64 + 32 + 1 + 1 + 0)
+            .store_uint(4 + 2 + 0, 1 + 4 + 4 + 64 + 32 + 1 + 1 + 1)
             .store_ref(state_init);
     send_raw_message(msg.end_cell(), CARRY_REMAINING_GAS);
 }

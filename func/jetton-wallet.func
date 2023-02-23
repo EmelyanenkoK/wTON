@@ -50,7 +50,7 @@ const special::unwrap_op_length = 23;
   internal_transfer  query_id:uint64 amount:(VarUInteger 16) from:MsgAddress
                      response_address:MsgAddress
                      forward_ton_amount:(VarUInteger 16)
-                     forward_payload:(Either Cell ^Cell) 
+                     forward_payload:(Either Cell ^Cell)
                      = InternalMsgBody;
 -}
 
@@ -71,9 +71,12 @@ const special::unwrap_op_length = 23;
   throw_unless(708, slice_bits(in_msg_body) >= 1);
   slice either_forward_payload = in_msg_body;
   int fwd_count = forward_ton_amount ? 2 : 1;
+
   ;; We either send money as in msg_value and thus allows excesses to return
   ;; or send exactly amount needed to deliver jetton_amount
   int amount = max(jetton_amount + forward_ton_amount + fwd_count * fwd_fee + 2 * fee::gas_consumption, msg_value);
+  throw_unless(error::not_enough_tons, balance > amount);
+
   var msg = begin_cell()
     .store_msg_flag(msg_flag::bounceable)
     .store_slice(to_wallet_address)
@@ -91,17 +94,20 @@ const special::unwrap_op_length = 23;
     .end_cell();
 
   msg = msg.store_ref(msg_body);
-  send_raw_message(msg.end_cell(), SELFDESTRUCT_ON_EMPTY);
+  send_raw_message(msg.end_cell(), PAY_FEES_SEPARATELY);
 }
 
 
-;; order of parameters is strange, it is expected that it minimizes 
+;; order of parameters is strange, it is expected that it minimizes
 ;; stack permutation for gas-optimization but should be revisited
 () receive_tokens_basics(int fwd_fee, int msg_value, slice owner_address, int query_id, int jetton_amount, slice from_address, slice in_msg_body) impure {
   slice response_address = in_msg_body~load_msg_addr();
   int forward_ton_amount = in_msg_body~load_coins();
 
   msg_value -= fee::gas_consumption + jetton_amount;
+  if(forward_ton_amount) {
+    msg_value -= forward_ton_amount + fwd_fee;
+  }
   throw_unless(error::not_enough_tons, msg_value > 0);
   if(forward_ton_amount) {
     msg_value -= (forward_ton_amount + fwd_fee);
@@ -167,7 +173,7 @@ const special::unwrap_op_length = 23;
   internal_transfer  query_id:uint64 amount:(VarUInteger 16) from:MsgAddress
                      response_address:MsgAddress
                      forward_ton_amount:(VarUInteger 16)
-                     forward_payload:(Either Cell ^Cell) 
+                     forward_payload:(Either Cell ^Cell)
                      = InternalMsgBody;
 -}
 
@@ -191,7 +197,7 @@ const special::unwrap_op_length = 23;
   external_transfer  query_id:uint64 amount:(VarUInteger 16)
                      response_address:MsgAddress
                      forward_ton_amount:(VarUInteger 16)
-                     forward_payload:(Either Cell ^Cell) 
+                     forward_payload:(Either Cell ^Cell)
                      = InternalMsgBody;
 -}
 
@@ -210,18 +216,15 @@ const special::unwrap_op_length = 23;
 -}
 
 () burn_tokens (slice in_msg_body, slice sender_address, int msg_value, int fwd_fee) impure {
-
   (int balance, slice owner_address, slice jetton_master_address, cell jetton_wallet_code) = get_wallet_data();
   int query_id = in_msg_body~load_query_id();
   int jetton_amount = in_msg_body~load_coins();
   slice response_address = in_msg_body~load_msg_addr();
-  ;; we use custom payload to load send_mode
-  int send_mode = CARRY_REMAINING_GAS;
-  cell custom_payload = in_msg_body~load_dict();
-  if(~ custom_payload.null?()) {
-    send_mode = custom_payload.begin_parse().preload_uint(8);
-  }
+
   throw_unless(error::unauthorized_transfer, equal_slice_bits(owner_address, sender_address));
+
+  balance -= fee::gas_consumption + fwd_fee + jetton_amount;
+  throw_unless(error::not_enough_tons, balance > 0);
 
   var msg_body = begin_cell()
       .store_op(op::unwrap_notification)
@@ -232,16 +235,12 @@ const special::unwrap_op_length = 23;
 
   var msg = begin_cell()
     .store_msg_flag(msg_flag::non_bounceable)
-    .store_slice(jetton_master_address)
+    .store_slice(response_address)
     .store_coins(jetton_amount)
     .store_uint(1, 1 + 4 + 4 + 64 + 32 + 1 + 1)
     .store_ref(msg_body);
 
-  send_raw_message(msg.end_cell(), send_mode);
-}
-
-() on_bounce (slice in_msg_body) impure {
-    ;; Do we need to do something here ???
+  send_raw_message(msg.end_cell(), PAY_FEES_SEPARATELY);
 }
 
 () recv_internal(int my_balance, int msg_value, cell in_msg_full, slice in_msg_body) impure {
@@ -252,7 +251,6 @@ const special::unwrap_op_length = 23;
   slice cs = in_msg_full.begin_parse();
   int flags = cs~load_uint(4);
   if (flags & 1) {
-    on_bounce(in_msg_body);
     return ();
   }
   slice sender_address = cs~load_msg_addr();

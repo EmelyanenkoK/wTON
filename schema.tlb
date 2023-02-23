@@ -1,0 +1,28 @@
+// wTON Minter
+mint#aeaf6718 to_address:MsgAddress = InternalMsgBody;
+
+provide_wallet_address#2c76b973 owner_address:MsgAddress include_address:Bool = InternalMsgBody;
+
+// wTON Wallet
+transfer#f8a7ea5 query_id:uint64 amount:Coins destination:MsgAddress
+        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+        forward_ton_amount:Coins forward_payload:(Either Cell ^Cell)
+        = InternalMsgBody;
+
+internal_transfer#178d4519 query_id:uint64 amount:Coins from:MsgAddress
+        response_address:MsgAddress
+        forward_ton_amount:(VarUInteger 16)
+        forward_payload:(Either Cell ^Cell)
+        = InternalMsgBody;
+
+external_transfer#05db0ab7 query_id:uint64 amount:Coins
+        response_address:MsgAddress
+        forward_ton_amount:Coins
+        forward_payload:(Either Cell ^Cell)
+        = InternalMsgBody;
+
+burn#595f07bc query_id:uint64 amount:Coins
+        response_destination:MsgAddress custom_payload:(Maybe ^Cell)
+        = InternalMsgBody;
+
+unwrap_notification#90d0a42f query_id:uint64 amount:Coins from:MsgAddress = InternalMsgBody;
