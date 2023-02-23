@@ -1,12 +1,12 @@
-import {expect, use} from "chai";
-import {Address, Builder, Cell, Coins, Slice} from "ton3-core";
+import { expect, use } from "chai";
+import { Address, Builder, Cell, Coins, Slice } from "ton3-core";
 import {
   generateAddress,
   tvmMatchers,
   JettonOperation,
   TestableContract,
 } from "@tonkite/testing";
-import {Emulator} from "@tonkite/vm";
+import { Emulator } from "@tonkite/vm";
 import {
   WALLET_CODE,
   GLOBAL_CONFIG,
@@ -14,7 +14,7 @@ import {
   unpackUnwrapNotification,
   externalTransfer,
 } from "./common";
-import {WTONError} from "./common/WTONError";
+import { WTONError } from "./common/WTONError";
 
 use(tvmMatchers);
 
@@ -130,7 +130,7 @@ describe("wTON Wallet", () => {
     });
 
     it("should fail if cross-chain", async () => {
-      const destination = generateAddress({workchain: -1});
+      const destination = generateAddress({ workchain: -1 });
       const context = await wallet.handleInternalMessage({
         src: owner,
         value: new Coins(1),
@@ -209,7 +209,9 @@ describe("wTON Wallet", () => {
         }),
       });
 
-      expect(context).to.failComputePhase(WTONError.UNAUTHORIZED_INCOMING_TRANSFER);
+      expect(context).to.failComputePhase(
+        WTONError.UNAUTHORIZED_INCOMING_TRANSFER
+      );
     });
   });
 

@@ -7,7 +7,12 @@ import {
   MessageFlag,
 } from "@tonkite/testing";
 import { Emulator } from "@tonkite/vm";
-import {MINTER_CODE, WALLET_CODE, GLOBAL_CONFIG, WTONOperation} from "./common";
+import {
+  MINTER_CODE,
+  WALLET_CODE,
+  GLOBAL_CONFIG,
+  WTONOperation,
+} from "./common";
 
 use(tvmMatchers);
 
