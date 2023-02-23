@@ -7,7 +7,7 @@ import {
   MessageFlag,
 } from "@tonkite/testing";
 import { Emulator } from "@tonkite/vm";
-import { MINTER_CODE, WALLET_CODE, GLOBAL_CONFIG } from "./common";
+import {MINTER_CODE, WALLET_CODE, GLOBAL_CONFIG, WTONOperation} from "./common";
 
 use(tvmMatchers);
 
@@ -49,7 +49,7 @@ describe("wTON Minter", () => {
         src: generateAddress(),
         value: new Coins(1), // 1 < 1 + 0.015 + 0.1
         body: new Builder()
-          .storeUint(21, 32) // op::mint
+          .storeUint(WTONOperation.MINT, 32) // op::mint
           .storeUint(0, 64) // query_id
           .storeAddress(RECEIVER)
           .cell(),

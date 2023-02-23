@@ -133,8 +133,9 @@ PROGRAM{
     ~load_query_id INLINECALLDICT	//  msg_value msg_cell op in_msg_body query_id
     load_data INLINECALLDICT	//  msg_value msg_cell op in_msg_body query_id _87 _88
     NIP	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code
-    s3 PUSH	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code op
-    21 EQINT	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code _13
+    s3 PUSH
+    2930730776 PUSHINT	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code op _12=2930730776
+    EQUAL	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code _13
     IFJMP:<{	//  msg_value msg_cell op in_msg_body query_id jetton_wallet_code
       NIP
       2 2 BLKDROP2

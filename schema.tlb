@@ -25,4 +25,4 @@ burn#595f07bc query_id:uint64 amount:Coins
         response_destination:MsgAddress custom_payload:(Maybe ^Cell)
         = InternalMsgBody;
 
-unwrap_notification query_id:uint64 amount:Coins from:MsgAddress = InternalMsgBody;
+unwrap_notification#90d0a42f query_id:uint64 amount:Coins from:MsgAddress = InternalMsgBody;

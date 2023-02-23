@@ -240,7 +240,7 @@ PROGRAM{
           2DROP	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value
           FALSE	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification
           NEWC	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _45
-          2184 PUSHINT	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _45 _46=2184
+          2429592623 PUSHINT	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _45 _46=2429592623
           store_op INLINECALLDICT	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _47
           s6 PUSH	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _47 query_id
           store_query_id INLINECALLDICT	//  forward_ton_amount either_forward_payload owner_address query_id jetton_amount from_address response_address msg_value need_transfer_notification _48
@@ -394,7 +394,7 @@ PROGRAM{
     0 GTINT	//  owner_address response_address jetton_amount query_id _27
     709 THROWIFNOT
     NEWC	//  owner_address response_address jetton_amount query_id _30
-    2184 PUSHINT	//  owner_address response_address jetton_amount query_id _30 _31=2184
+    2429592623 PUSHINT	//  owner_address response_address jetton_amount query_id _30 _31=2429592623
     store_op INLINECALLDICT	//  owner_address response_address jetton_amount query_id _32
     SWAP	//  owner_address response_address jetton_amount _32 query_id
     store_query_id INLINECALLDICT	//  owner_address response_address jetton_amount _33
@@ -465,7 +465,7 @@ PROGRAM{
       receive_tokens CALLDICT
     }>	//  fwd_fee msg_value sender_address in_msg_body op
     DUP
-    1911 PUSHINT	//  fwd_fee msg_value sender_address in_msg_body op op _40=1911
+    98241207 PUSHINT	//  fwd_fee msg_value sender_address in_msg_body op op _40=98241207
     EQUAL	//  fwd_fee msg_value sender_address in_msg_body op _41
     IFJMP:<{	//  fwd_fee msg_value sender_address in_msg_body op
       DROP	//  fwd_fee msg_value sender_address in_msg_body
