@@ -1,0 +1,10 @@
+{
+  "require": "ts-node/register",
+  "extensions": ["ts"],
+  "spec": [
+    "tests/**/*.spec.ts"
+  ],
+  "watch-files": [
+    "src"
+  ]
+}

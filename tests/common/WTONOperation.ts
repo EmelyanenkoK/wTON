@@ -1,0 +1,4 @@
+export enum WTONOperation {
+  UNWRAP_NOTIFICATION = 0x888,
+  EXTERNAL_TRANSFER = 0x777,
+}
